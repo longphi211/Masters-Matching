@@ -144,20 +144,20 @@ export const OperatorView: React.FC<OperatorViewProps> = ({ onBack }) => {
                   </div>
                 </div>
 
-                <div className="flex items-center gap-2 pt-1">
-                  <button
-                    onClick={() => handleApprove(item.id)}
-                    className="flex-1 py-2 rounded-xl bg-[#009f6e] text-white text-xs font-bold hover:bg-[#007b55]"
-                    type="button"
-                  >
-                    Duyệt xác minh
-                  </button>
+                <div className="grid grid-cols-2 gap-3.5 pt-1.5">
                   <button
                     onClick={() => handleReject(item.id)}
-                    className="py-2 px-4 rounded-xl bg-slate-100 text-[#ba1a1a] text-xs font-bold hover:bg-red-50"
+                    className="h-11 rounded-xl bg-slate-100 text-[#ba1a1a] text-xs font-bold hover:bg-red-50 active:scale-95 transition-all border border-slate-200/60"
                     type="button"
                   >
                     Từ chối
+                  </button>
+                  <button
+                    onClick={() => handleApprove(item.id)}
+                    className="h-11 rounded-xl bg-[#009f6e] text-white text-xs font-bold hover:bg-[#007b55] active:scale-95 transition-all shadow-xs"
+                    type="button"
+                  >
+                    Duyệt xác minh
                   </button>
                 </div>
               </div>
@@ -172,24 +172,24 @@ export const OperatorView: React.FC<OperatorViewProps> = ({ onBack }) => {
           <div className="flex items-center justify-between pb-1 border-b border-slate-100">
             <span className="font-bold text-[#ba1a1a] flex items-center gap-1">
               <span className="material-symbols-outlined text-[16px]">report</span>
-              Báo cáo: Quấy rối liên hệ ngoài phạm vi
+              Báo cáo: Quấy rối liên hệ
             </span>
             <span className="text-[10px] text-slate-400">1 giờ trước</span>
           </div>
           <p className="text-[#44474e] leading-relaxed">
-            Người dùng phản ánh tài khoản "Tập đoàn X" liên tục spam tin nhắn mời vay vốn thay vì tư vấn đúng đề xuất.
+            Người dùng phản ánh tài khoản "Tập đoàn X" spam tin nhắn mời vay vốn ngoài phạm vi tư vấn.
           </p>
-          <div className="flex gap-2 pt-1">
+          <div className="grid grid-cols-2 gap-3.5 pt-1.5">
             <button
               onClick={() => alert('Đã khóa tạm thời tài khoản bị báo cáo theo PRD v4.0!')}
-              className="py-2 px-3 rounded-xl bg-[#ba1a1a] text-white font-bold"
+              className="h-11 px-3 rounded-xl bg-[#ba1a1a] text-white font-bold active:scale-95 transition-all"
               type="button"
             >
-              Khóa tài khoản vi phạm (BLOCKED)
+              Khóa tài khoản
             </button>
             <button
               onClick={() => alert('Đã lưu nhật ký cảnh cáo người dùng.')}
-              className="py-2 px-3 rounded-xl bg-slate-100 text-[#0b1c30] font-semibold"
+              className="h-11 px-3 rounded-xl bg-slate-100 text-[#0b1c30] font-semibold active:scale-95 transition-all border border-slate-200/60"
               type="button"
             >
               Gửi nhắc nhở

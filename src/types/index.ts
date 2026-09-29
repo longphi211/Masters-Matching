@@ -46,6 +46,10 @@ export interface ExpertProfile {
   trustScore: string;
   trustNote: string;
   isBookmarked?: boolean;
+  projectHistory?: {
+    month: string;
+    count: number;
+  }[];
 }
 
 export interface EnterpriseDemand {

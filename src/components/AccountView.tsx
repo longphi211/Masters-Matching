@@ -61,42 +61,42 @@ export const AccountView: React.FC<AccountViewProps> = ({
       <div className="bg-[#eff4ff] rounded-2xl p-4 border border-slate-200/60 flex flex-col gap-2.5">
         <div className="flex items-center justify-between">
           <span className="text-xs font-bold text-[#001026] uppercase tracking-wider">
-            Chuyển góc nhìn tài khoản
+            Góc nhìn hoạt động
           </span>
-          <span className="text-[11px] text-[#44474e]">1 tài khoản, 2 tư cách</span>
+          <span className="text-[11px] text-[#006399] font-bold">1 tài khoản kép</span>
         </div>
-        <p className="text-xs text-[#44474e] leading-snug">
-          Theo PRD v4.0: Bộ chuyển Doanh nghiệp / Chuyên gia chỉ thay đổi góc nhìn giao diện. Hệ thống kiểm tra quyền độc lập và chặn tự gửi lời mời cho chính mình.
+        <p className="text-xs text-[#44474e]">
+          Chuyển đổi linh hoạt giữa góc nhìn Doanh nghiệp và Chuyên gia.
         </p>
 
-        <div className="grid grid-cols-2 gap-2 pt-1">
+        <div className="grid grid-cols-2 gap-3.5 pt-1">
           <button
             onClick={() => onPerspectiveChange('enterprise')}
-            className={`p-3 rounded-xl border text-left transition-all flex flex-col gap-1 ${
+            className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1 active:scale-95 ${
               perspective === 'enterprise'
-                ? 'bg-[#0b2545] text-white border-[#0b2545] shadow-sm'
-                : 'bg-white text-[#0b1c30] border-slate-200 hover:border-slate-300'
+                ? 'bg-[#001026] text-white border-[#001026] shadow-xs'
+                : 'bg-white text-[#001026] border-slate-200 hover:border-slate-300'
             }`}
             type="button"
           >
-            <span className="text-xs font-bold">Góc nhìn Doanh nghiệp</span>
+            <span className="text-xs font-bold">Doanh nghiệp</span>
             <span className={`text-[10px] ${perspective === 'enterprise' ? 'text-white/70' : 'text-[#44474e]'}`}>
-              Đăng nhu cầu, mời chuyên gia
+              Đăng nhu cầu, mời cố vấn
             </span>
           </button>
 
           <button
             onClick={() => onPerspectiveChange('expert')}
-            className={`p-3 rounded-xl border text-left transition-all flex flex-col gap-1 ${
+            className={`p-3.5 rounded-xl border text-left transition-all flex flex-col gap-1 active:scale-95 ${
               perspective === 'expert'
-                ? 'bg-[#0b2545] text-white border-[#0b2545] shadow-sm'
-                : 'bg-white text-[#0b1c30] border-slate-200 hover:border-slate-300'
+                ? 'bg-[#001026] text-white border-[#001026] shadow-xs'
+                : 'bg-white text-[#001026] border-slate-200 hover:border-slate-300'
             }`}
             type="button"
           >
-            <span className="text-xs font-bold">Góc nhìn Chuyên gia</span>
+            <span className="text-xs font-bold">Chuyên gia</span>
             <span className={`text-[10px] ${perspective === 'expert' ? 'text-white/70' : 'text-[#44474e]'}`}>
-              Gửi đề xuất, nhận bài toán
+              Nhận bài toán, gửi đề xuất
             </span>
           </button>
         </div>
@@ -191,7 +191,7 @@ export const AccountView: React.FC<AccountViewProps> = ({
             <button
               disabled={submittedKyc}
               type="submit"
-              className="py-2.5 rounded-xl bg-[#001026] text-white text-xs font-bold hover:bg-[#0b2545] transition-colors mt-1"
+              className="h-12 rounded-xl bg-[#001026] text-white text-xs font-bold hover:bg-[#0b2545] active:scale-95 transition-all mt-1"
             >
               {submittedKyc ? 'Đang gửi hồ sơ...' : 'Gửi Operator duyệt hồ sơ'}
             </button>
@@ -202,26 +202,26 @@ export const AccountView: React.FC<AccountViewProps> = ({
       {/* Operator Console Access Button (PRD Section 7) */}
       <div className="bg-[#eff4ff] rounded-2xl p-4 border border-slate-200/60 flex items-center justify-between">
         <div className="flex items-center gap-2.5">
-          <div className="w-10 h-10 rounded-xl bg-[#0b2545] text-white flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-[#001026] text-white flex items-center justify-center">
             <span className="material-symbols-outlined text-[20px]">admin_panel_settings</span>
           </div>
           <div>
             <h4 className="text-xs font-bold text-[#001026]">Operator Work Queue</h4>
-            <p className="text-[11px] text-[#44474e]">Hàng đợi duyệt KYC, xử lý báo cáo vi phạm</p>
+            <p className="text-[11px] text-[#44474e]">Hàng đợi duyệt KYC &amp; báo cáo</p>
           </div>
         </div>
         <button
           onClick={onOpenOperator}
-          className="px-3 py-1.5 rounded-xl bg-[#006399] text-white text-xs font-bold hover:bg-[#004b74] active:scale-95 transition-all"
+          className="h-11 px-4 rounded-xl bg-[#006399] text-white text-xs font-bold hover:bg-[#004b74] active:scale-95 transition-all"
           type="button"
         >
           Mở Console
         </button>
       </div>
 
-      {/* Legal & Regulatory Disclaimer */}
-      <div className="p-3 bg-slate-50 rounded-2xl text-[11px] text-slate-500 border border-slate-200/40 leading-relaxed">
-        Nền tảng vận hành theo <strong className="text-slate-700">Luật Thương mại điện tử 122/2025/QH15</strong> (hiệu lực 01/07/2026). Nền tảng không thu hộ, giữ hộ, phân chia hoặc quản lý thù lao tư vấn giữa hai bên.
+      {/* Legal & Regulatory Disclaimer - Concise */}
+      <div className="p-3 bg-slate-50 rounded-2xl text-[11px] text-slate-500 border border-slate-200/40 text-center">
+        Tuân thủ Luật TMĐT 122/2025/QH15 • Nền tảng không thu hộ hoặc quản lý thù lao tư vấn
       </div>
     </div>
   );

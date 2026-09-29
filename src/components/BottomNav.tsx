@@ -12,15 +12,15 @@ export const BottomNav: React.FC<BottomNavProps> = ({
   unreadInvitationsCount = 2,
 }) => {
   return (
-    <nav className="fixed bottom-0 w-full z-40 bg-[#f8f9ff]/95 backdrop-blur-xl border-t border-[#0b2545]/5 shadow-[0_-1px_8px_rgba(11,37,69,0.05)]">
-      <div className="max-w-2xl mx-auto flex justify-around items-center h-16 px-2">
+    <nav className="fixed bottom-0 w-full z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200/70 shadow-[0_-2px_12px_rgba(11,37,69,0.06)] pb-[max(0.5rem,env(safe-area-inset-bottom))]">
+      <div className="max-w-md mx-auto flex justify-around items-center h-16 px-3">
         {/* Tab 1: Khám phá */}
         <button
           onClick={() => onTabChange('kham-pha')}
-          className={`flex flex-col items-center justify-center gap-0.5 w-16 h-12 transition-all active:scale-95 ${
+          className={`flex flex-col items-center justify-center gap-1 flex-1 h-13 max-w-[80px] rounded-xl transition-all active:scale-90 ${
             activeTab === 'kham-pha'
-              ? 'text-[#006399] font-bold'
-              : 'text-[#44474e] hover:text-[#0b1c30]'
+              ? 'text-[#001026] font-bold'
+              : 'text-[#74777f] hover:text-[#001026]'
           }`}
           type="button"
         >
@@ -36,10 +36,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         {/* Tab 2: Lời mời */}
         <button
           onClick={() => onTabChange('loi-moi')}
-          className={`relative flex flex-col items-center justify-center gap-0.5 w-16 h-12 transition-all active:scale-95 ${
+          className={`relative flex flex-col items-center justify-center gap-1 flex-1 h-13 max-w-[80px] rounded-xl transition-all active:scale-90 ${
             activeTab === 'loi-moi'
-              ? 'text-[#006399] font-bold'
-              : 'text-[#44474e] hover:text-[#0b1c30]'
+              ? 'text-[#001026] font-bold'
+              : 'text-[#74777f] hover:text-[#001026]'
           }`}
           type="button"
         >
@@ -51,7 +51,7 @@ export const BottomNav: React.FC<BottomNavProps> = ({
               handshake
             </span>
             {unreadInvitationsCount > 0 && (
-              <span className="absolute -top-1 -right-2 px-1 min-w-[15px] h-[15px] flex items-center justify-center rounded-full bg-[#ba1a1a] text-white text-[9px] font-bold leading-none">
+              <span className="absolute -top-1 -right-2 px-1 min-w-[16px] h-[16px] flex items-center justify-center rounded-full bg-[#ba1a1a] text-white text-[9px] font-bold leading-none">
                 {unreadInvitationsCount}
               </span>
             )}
@@ -62,10 +62,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         {/* Tab 3: Nhu cầu */}
         <button
           onClick={() => onTabChange('nhu-cau')}
-          className={`flex flex-col items-center justify-center gap-0.5 w-16 h-12 transition-all active:scale-95 ${
+          className={`flex flex-col items-center justify-center gap-1 flex-1 h-13 max-w-[80px] rounded-xl transition-all active:scale-90 ${
             activeTab === 'nhu-cau'
-              ? 'text-[#006399] font-bold'
-              : 'text-[#44474e] hover:text-[#0b1c30]'
+              ? 'text-[#001026] font-bold'
+              : 'text-[#74777f] hover:text-[#001026]'
           }`}
           type="button"
         >
@@ -81,10 +81,10 @@ export const BottomNav: React.FC<BottomNavProps> = ({
         {/* Tab 4: Tài khoản */}
         <button
           onClick={() => onTabChange('tai-khoan')}
-          className={`flex flex-col items-center justify-center gap-0.5 w-16 h-12 transition-all active:scale-95 ${
+          className={`flex flex-col items-center justify-center gap-1 flex-1 h-13 max-w-[80px] rounded-xl transition-all active:scale-90 ${
             activeTab === 'tai-khoan'
-              ? 'text-[#006399] font-bold'
-              : 'text-[#44474e] hover:text-[#0b1c30]'
+              ? 'text-[#001026] font-bold'
+              : 'text-[#74777f] hover:text-[#001026]'
           }`}
           type="button"
         >

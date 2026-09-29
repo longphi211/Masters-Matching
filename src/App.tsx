@@ -233,7 +233,7 @@ export default function App() {
       />
 
       {/* Main Container */}
-      <main className="flex-1 w-full max-w-2xl mx-auto pt-20">
+      <main className="flex-1 w-full max-w-2xl mx-auto pt-[106px]">
         {/* Render Tab Views */}
         {activeTab === 'kham-pha' && (
           <>

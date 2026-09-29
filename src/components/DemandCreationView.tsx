@@ -181,9 +181,9 @@ export const DemandCreationView: React.FC<DemandCreationViewProps> = ({
             placeholder="Trình bày cụ thể hiện trạng, phạm vi tư vấn, kết quả kỳ vọng..."
           ></textarea>
           <div className="flex items-start gap-2 p-2.5 rounded-xl bg-[#eff4ff] text-[#44474e] border border-slate-200/50 mt-0.5">
-            <span className="material-symbols-outlined text-[18px] text-[#006399] shrink-0 mt-0.5">lock</span>
+            <span className="material-symbols-outlined text-[16px] text-[#006399] shrink-0 mt-0.5">lock</span>
             <p className="text-xs leading-snug">
-              <span className="font-bold text-[#001026]">Gợi ý bảo mật:</span> Vui lòng không đưa dữ liệu nhạy cảm hoặc bí mật kinh doanh công khai. Thông tin tài chính mật sẽ chia sẻ sau khi ký NDA trực tiếp.
+              Lưu ý: Không nhập bí mật kinh doanh; tài liệu mật chia sẻ sau khi ký NDA.
             </p>
           </div>
         </div>
@@ -195,10 +195,10 @@ export const DemandCreationView: React.FC<DemandCreationViewProps> = ({
               <span className="material-symbols-outlined text-[18px] text-[#006399]">laptop_mac</span>
               Hình thức làm việc
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {[
-                { id: 'online', label: 'Tư vấn từ xa / Online', icon: 'videocam' },
-                { id: 'office', label: 'Gặp trực tiếp tại VP', icon: 'apartment' },
+                { id: 'online', label: 'Online từ xa', icon: 'videocam' },
+                { id: 'office', label: 'Tại văn phòng', icon: 'apartment' },
                 { id: 'hybrid', label: 'Linh hoạt (Hybrid)', icon: 'sync_alt' },
               ].map((item) => {
                 const isSelected = workMode === item.id;
@@ -206,9 +206,9 @@ export const DemandCreationView: React.FC<DemandCreationViewProps> = ({
                   <button
                     key={item.id}
                     onClick={() => setWorkMode(item.id)}
-                    className={`px-3.5 py-2 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all ${
+                    className={`px-4 py-2.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95 ${
                       isSelected
-                        ? 'bg-[#001026] text-white shadow-sm'
+                        ? 'bg-[#001026] text-white shadow-xs'
                         : 'bg-[#eff4ff] text-[#0b1c30] hover:bg-[#dce9ff] border border-slate-200/50'
                     }`}
                     type="button"
@@ -226,7 +226,7 @@ export const DemandCreationView: React.FC<DemandCreationViewProps> = ({
               <span className="material-symbols-outlined text-[18px] text-[#006399]">location_on</span>
               Khu vực ưu tiên
             </label>
-            <div className="grid grid-cols-3 gap-2">
+            <div className="grid grid-cols-3 gap-2.5">
               {[
                 { id: 'hanoi', label: 'Hà Nội' },
                 { id: 'tphcm', label: 'TP.HCM' },
@@ -237,9 +237,9 @@ export const DemandCreationView: React.FC<DemandCreationViewProps> = ({
                   <button
                     key={loc.id}
                     onClick={() => setLocation(loc.id)}
-                    className={`py-2 px-2 rounded-xl text-xs font-semibold text-center transition-all flex items-center justify-center gap-1 ${
+                    className={`py-2.5 px-2 rounded-xl text-xs font-semibold text-center transition-all flex items-center justify-center gap-1 active:scale-95 ${
                       isSelected
-                        ? 'bg-[#001026] text-white shadow-sm'
+                        ? 'bg-[#001026] text-white shadow-xs'
                         : 'bg-[#eff4ff] text-[#0b1c30] hover:bg-[#dce9ff] border border-slate-200/50'
                     }`}
                     type="button"
@@ -266,95 +266,58 @@ export const DemandCreationView: React.FC<DemandCreationViewProps> = ({
             id="budget-input"
             value={budget}
             onChange={(e) => setBudget(e.target.value)}
-            className="w-full px-3.5 py-3 rounded-xl bg-white text-[#0b1c30] text-sm font-semibold shadow-sm border border-slate-200/80 outline-none focus:ring-2 focus:ring-[#006399]/20 transition-all"
+            className="w-full px-3.5 py-3 rounded-xl bg-white text-[#0b1c30] text-sm font-semibold shadow-xs border border-slate-200/80 outline-none focus:ring-2 focus:ring-[#006399]/20 transition-all"
             type="text"
           />
-          <p className="text-xs text-[#44474e] flex items-center gap-1">
-            <span className="material-symbols-outlined text-[14px] text-[#74777f]">info</span>
-            Chỉ làm cơ sở tham khảo cho chuyên gia, không thanh toán qua nền tảng.
-          </p>
         </div>
 
         {/* Visibility */}
-        <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2">
           <label className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
             <span className="material-symbols-outlined text-[18px] text-[#006399]">visibility</span>
-            Mức độ hiển thị nhu cầu
+            Mức độ hiển thị
           </label>
-          <div className="space-y-2">
-            <label
+          <div className="grid grid-cols-2 gap-2.5">
+            <button
+              type="button"
               onClick={() => setVisibility('public')}
-              className={`relative flex items-start p-3.5 rounded-2xl bg-white border cursor-pointer transition-all ${
+              className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all active:scale-95 ${
                 visibility === 'public'
-                  ? 'border-[#006399] ring-2 ring-[#006399]/15 shadow-sm'
-                  : 'border-slate-200/80 hover:bg-[#eff4ff]'
+                  ? 'border-[#006399] bg-[#eff4ff] ring-2 ring-[#006399]/20'
+                  : 'border-slate-200/80 bg-white hover:bg-slate-50'
               }`}
             >
-              <input
-                type="radio"
-                name="visibility"
-                checked={visibility === 'public'}
-                onChange={() => setVisibility('public')}
-                className="mt-1 h-4 w-4 text-[#001026] accent-[#001026] cursor-pointer"
-              />
-              <div className="ml-3 flex flex-col">
-                <span className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
-                  Công khai cho chuyên gia đã xác minh
-                  <span className="material-symbols-outlined text-[15px] text-[#009f6e]">verified</span>
-                </span>
-                <span className="text-[11px] text-[#44474e] mt-0.5">
-                  Hồ sơ hiển thị trọn vẹn đến các chuyên gia đạt chuẩn kiểm định danh tính &amp; chứng chỉ.
-                </span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-[#001026]">Công khai</span>
+                <span className="material-symbols-outlined text-[15px] text-[#009f6e]">verified</span>
               </div>
-            </label>
+              <span className="text-[11px] text-[#44474e]">Hiện tên &amp; bài toán</span>
+            </button>
 
-            <label
+            <button
+              type="button"
               onClick={() => setVisibility('private')}
-              className={`relative flex items-start p-3.5 rounded-2xl bg-white border cursor-pointer transition-all ${
+              className={`p-3 rounded-xl border text-left flex flex-col gap-1 transition-all active:scale-95 ${
                 visibility === 'private'
-                  ? 'border-[#006399] ring-2 ring-[#006399]/15 shadow-sm'
-                  : 'border-slate-200/80 hover:bg-[#eff4ff]'
+                  ? 'border-[#006399] bg-[#eff4ff] ring-2 ring-[#006399]/20'
+                  : 'border-slate-200/80 bg-white hover:bg-slate-50'
               }`}
             >
-              <input
-                type="radio"
-                name="visibility"
-                checked={visibility === 'private'}
-                onChange={() => setVisibility('private')}
-                className="mt-1 h-4 w-4 text-[#001026] accent-[#001026] cursor-pointer"
-              />
-              <div className="ml-3 flex flex-col">
-                <span className="text-xs font-bold text-[#0b1c30] flex items-center gap-1.5">
-                  Ẩn danh tính doanh nghiệp
-                  <span className="material-symbols-outlined text-[15px] text-[#006399]">visibility_off</span>
-                </span>
-                <span className="text-[11px] text-[#44474e] mt-0.5">
-                  Chỉ hiển thị quy mô &amp; ngành nghề đến khi bạn chủ động chấp nhận kết nối trao đổi.
-                </span>
+              <div className="flex items-center gap-1.5">
+                <span className="text-xs font-bold text-[#001026]">Ẩn danh DN</span>
+                <span className="material-symbols-outlined text-[15px] text-[#006399]">visibility_off</span>
               </div>
-            </label>
+              <span className="text-[11px] text-[#44474e]">Chỉ hiện ngành nghề</span>
+            </button>
           </div>
         </div>
 
-        {/* PRD v4.0 Boundaries Callout Box */}
-        <div className="p-4 rounded-2xl bg-[#eff4ff] text-[#0b1c30] flex items-start gap-3 border border-slate-200/60 shadow-xs">
-          <div className="w-8 h-8 rounded-full bg-[#dce9ff] flex items-center justify-center shrink-0 text-[#006399] mt-0.5">
-            <span className="material-symbols-outlined text-[20px]">shield_person</span>
-          </div>
-          <div className="flex flex-col">
-            <h3 className="text-xs font-bold text-[#001026]">Quy định &amp; Ranh giới nền tảng</h3>
-            <p className="text-xs text-[#44474e] mt-1 leading-relaxed">
-              Nền tảng chỉ đóng vai trò giới thiệu; không giữ cọc (escrow), không can thiệp thỏa thuận thù lao hay nghiệm thu công việc. Mọi cam kết do hai bên tự chủ động thiết lập.
-            </p>
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="flex flex-col gap-2.5 pt-2">
+        {/* Actions with generous spacing and height */}
+        <div className="flex flex-col gap-3.5 pt-3">
           <button
             onClick={handleSubmit}
             disabled={isSubmitting || isSuccess}
-            className="w-full py-3.5 px-4 rounded-xl bg-[#001026] text-white font-headline font-bold text-sm flex items-center justify-center gap-2 shadow-md hover:bg-[#0b2545] active:scale-[0.99] transition-all disabled:opacity-70"
+            className="w-full h-13 min-h-[50px] px-4 rounded-xl bg-[#001026] text-white font-headline font-bold text-sm flex items-center justify-center gap-2 shadow-sm hover:bg-[#0b2545] active:scale-[0.98] transition-all disabled:opacity-70"
             type="button"
           >
             {isSubmitting ? (
@@ -376,7 +339,7 @@ export const DemandCreationView: React.FC<DemandCreationViewProps> = ({
           </button>
           <button
             onClick={onBack}
-            className="w-full py-3 px-4 rounded-xl bg-[#eff4ff] text-[#0b1c30] text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#dce9ff] active:scale-[0.99] transition-all border border-slate-200/60"
+            className="w-full h-12 px-4 rounded-xl bg-[#eff4ff] text-[#001026] text-xs font-bold flex items-center justify-center gap-2 hover:bg-[#dce9ff] active:scale-[0.98] transition-all border border-slate-200/60"
             type="button"
           >
             <span className="material-symbols-outlined text-[18px]">bookmark_border</span>

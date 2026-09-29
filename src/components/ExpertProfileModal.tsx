@@ -1,4 +1,5 @@
 import React from 'react';
+import { ResponsiveContainer, AreaChart, Area, Tooltip, XAxis } from 'recharts';
 import { ExpertProfile } from '../types';
 
 interface ExpertProfileModalProps {
@@ -9,6 +10,24 @@ interface ExpertProfileModalProps {
   onToggleBookmark: (expertId: string) => void;
 }
 
+interface CustomTooltipProps {
+  active?: boolean;
+  payload?: Array<{ value: number }>;
+  label?: string;
+}
+
+const CustomSparklineTooltip: React.FC<CustomTooltipProps> = ({ active, payload, label }) => {
+  if (active && payload && payload.length) {
+    return (
+      <div className="bg-[#001026] text-white px-2.5 py-1 rounded-lg text-xs font-semibold shadow-lg border border-white/10">
+        <span>Tháng {label}: </span>
+        <span className="font-bold text-[#4edea3]">{payload[0].value} dự án</span>
+      </div>
+    );
+  }
+  return null;
+};
+
 export const ExpertProfileModal: React.FC<ExpertProfileModalProps> = ({
   expert,
   isOpen,
@@ -18,16 +37,29 @@ export const ExpertProfileModal: React.FC<ExpertProfileModalProps> = ({
 }) => {
   if (!isOpen || !expert) return null;
 
+  const sparklineData = expert.projectHistory && expert.projectHistory.length > 0
+    ? expert.projectHistory
+    : [
+        { month: 'T4', count: 3 },
+        { month: 'T5', count: 4 },
+        { month: 'T6', count: 6 },
+        { month: 'T7', count: 4 },
+        { month: 'T8', count: 5 },
+        { month: 'T9', count: 6 },
+      ];
+
+  const recentTotal = sparklineData.reduce((acc, curr) => acc + curr.count, 0);
+
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-sm flex justify-center animate-in fade-in duration-150">
-      <div className="w-full max-w-xl bg-[#f8f9ff] min-h-screen relative flex flex-col shadow-2xl">
-        {/* Sticky Header */}
-        <header className="sticky top-0 w-full z-40 bg-[#f8f9ff]/90 backdrop-blur-xl border-b border-[#0b2545]/5 px-4 h-16 flex items-center justify-between shadow-xs">
+      <div className="w-full max-w-lg bg-[#f8f9ff] min-h-screen relative flex flex-col shadow-2xl">
+        {/* Header với nút bấm lớn, dễ chạm */}
+        <header className="sticky top-0 w-full z-40 bg-[#f8f9ff]/95 backdrop-blur-xl border-b border-slate-200/60 px-4 h-16 flex items-center justify-between shadow-xs">
           <div className="flex items-center gap-2">
             <button
               onClick={onClose}
               aria-label="Quay lại"
-              className="w-10 h-10 -ml-2 flex items-center justify-center rounded-full text-[#0b1c30] hover:bg-[#eff4ff] active:scale-95 transition-colors"
+              className="w-11 h-11 flex items-center justify-center rounded-full text-[#0b1c30] hover:bg-[#eff4ff] active:scale-90 transition-all"
               type="button"
             >
               <span className="material-symbols-outlined text-[24px]">arrow_back_ios_new</span>
@@ -38,53 +70,55 @@ export const ExpertProfileModal: React.FC<ExpertProfileModalProps> = ({
           </div>
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full bg-[#eff4ff] flex items-center justify-center text-slate-500 hover:text-slate-800"
+            aria-label="Đóng"
+            className="w-10 h-10 rounded-full bg-[#eff4ff] flex items-center justify-center text-slate-500 hover:text-slate-800 active:scale-90 transition-all"
+            type="button"
           >
-            <span className="material-symbols-outlined text-[18px]">close</span>
+            <span className="material-symbols-outlined text-[20px]">close</span>
           </button>
         </header>
 
-        {/* Scrollable Content */}
-        <div className="flex flex-col w-full pb-36 px-4 pt-3 gap-4">
-          {/* Top Profile Card */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60">
+        {/* Nội dung hồ sơ tối ưu di động */}
+        <div className="flex flex-col w-full pb-36 px-4 pt-3.5 gap-3.5">
+          {/* Thông tin đại diện & Thống kê */}
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60 flex flex-col gap-3.5">
             <div className="flex items-start gap-3.5">
               <div className="relative shrink-0">
                 <img
                   referrerPolicy="no-referrer"
                   alt={expert.name}
-                  className="w-20 h-20 rounded-2xl object-cover shadow-sm ring-2 ring-slate-100"
+                  className="w-18 h-18 rounded-2xl object-cover ring-2 ring-slate-100 shadow-sm"
                   src={expert.avatarUrl}
                 />
-                <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#6ffbbe] flex items-center justify-center shadow-xs ring-2 ring-white">
-                  <span className="material-symbols-outlined text-[#002b1b] text-[14px]">check</span>
+                <span className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-[#4edea3] flex items-center justify-center ring-2 ring-white">
+                  <span className="material-symbols-outlined text-[#002b1b] text-[13px] font-bold">check</span>
                 </span>
               </div>
               <div className="flex flex-col min-w-0 flex-1">
-                <div className="flex items-center gap-1.5 mb-0.5">
-                  <span className="bg-[#eff4ff] text-[#001026] text-[10px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">
+                <div className="flex items-center gap-1.5 mb-1">
+                  <span className="bg-[#eff4ff] text-[#006399] text-[10px] font-bold px-2.5 py-0.5 rounded-full uppercase">
                     {expert.title}
                   </span>
-                  <span className="text-[#44474e] text-xs font-medium">• {expert.yearsExperience}+ năm kinh nghiệm</span>
+                  <span className="text-[#44474e] text-xs">• {expert.yearsExperience}+ năm KN</span>
                 </div>
                 <h2 className="font-headline text-lg font-bold text-[#001026] truncate">{expert.name}</h2>
-                <p className="text-xs text-[#44474e] line-clamp-2 mt-0.5">{expert.headline}</p>
-                <div className="flex items-center gap-2 mt-2 text-[#44474e] text-xs">
+                <p className="text-xs text-[#44474e] line-clamp-1 mt-0.5">{expert.headline}</p>
+                <div className="flex items-center gap-2 mt-1.5 text-xs text-[#44474e]">
                   <span className="flex items-center gap-1">
                     <span className="material-symbols-outlined text-[15px] text-[#006399]">location_on</span>
                     {expert.location}
                   </span>
                   <span>•</span>
-                  <span className="flex items-center gap-1 text-[#009f6e] font-bold">
-                    <span className="material-symbols-outlined text-[15px] text-[#4edea3]">bolt</span>
-                    Phản hồi {expert.responseSpeed}
+                  <span className="text-[#009f6e] font-semibold flex items-center gap-0.5">
+                    <span className="material-symbols-outlined text-[14px]">bolt</span>
+                    &lt; 2h
                   </span>
                 </div>
               </div>
             </div>
 
-            {/* Quick Metrics Strip */}
-            <div className="grid grid-cols-3 gap-2 mt-4 bg-[#eff4ff] rounded-xl p-3 text-center border border-slate-200/40">
+            {/* 3 Chỉ số nhanh */}
+            <div className="grid grid-cols-3 gap-2 bg-[#eff4ff] rounded-xl p-2.5 text-center border border-slate-200/40">
               <div>
                 <span className="block font-headline text-base font-bold text-[#001026]">{expert.consultingHours}+</span>
                 <span className="block text-[11px] text-[#44474e]">Giờ tư vấn</span>
@@ -95,167 +129,139 @@ export const ExpertProfileModal: React.FC<ExpertProfileModalProps> = ({
               </div>
               <div>
                 <span className="block font-headline text-base font-bold text-[#001026]">{expert.completedProjects}</span>
-                <span className="block text-[11px] text-[#44474e]">Dự án hoàn tất</span>
+                <span className="block text-[11px] text-[#44474e]">Dự án xong</span>
               </div>
             </div>
 
-            {/* Consulting Philosophy */}
-            <div className="mt-3.5 bg-slate-50 rounded-xl p-3 border border-slate-100">
-              <div className="flex items-center gap-1.5 mb-1 text-[#006399]">
-                <span className="material-symbols-outlined text-[18px]">format_quote</span>
-                <span className="text-xs font-bold text-[#001026]">Tôn chỉ tư vấn</span>
+            {/* Mini Sparkline Chart: Tần suất dự án 6 tháng */}
+            <div className="pt-2 border-t border-slate-100 flex flex-col gap-1.5">
+              <div className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-1.5 font-bold text-[#001026]">
+                  <span className="material-symbols-outlined text-[16px] text-[#006399]">trending_up</span>
+                  <span>Số dự án 6 tháng gần đây</span>
+                </div>
+                <span className="text-[11px] text-[#009f6e] font-bold bg-[#6ffbbe]/25 px-2 py-0.5 rounded-full">
+                  +{recentTotal} dự án
+                </span>
               </div>
-              <p className="text-xs text-[#0b1c30] leading-relaxed">
-                {expert.philosophy}
-              </p>
+
+              <div className="w-full h-14 bg-[#f8f9ff] rounded-xl p-1 border border-slate-200/50">
+                <ResponsiveContainer width="100%" height="100%">
+                  <AreaChart data={sparklineData} margin={{ top: 2, right: 6, left: 6, bottom: 0 }}>
+                    <defs>
+                      <linearGradient id="expertSparklineGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="5%" stopColor="#006399" stopOpacity={0.35} />
+                        <stop offset="95%" stopColor="#006399" stopOpacity={0.0} />
+                      </linearGradient>
+                    </defs>
+                    <Tooltip content={<CustomSparklineTooltip />} />
+                    <XAxis
+                      dataKey="month"
+                      axisLine={false}
+                      tickLine={false}
+                      tick={{ fontSize: 9, fill: '#74777f' }}
+                      interval={0}
+                    />
+                    <Area
+                      type="monotone"
+                      dataKey="count"
+                      stroke="#006399"
+                      strokeWidth={2}
+                      dot={{ r: 2.5, fill: '#006399' }}
+                      activeDot={{ r: 4.5, fill: '#001026', stroke: '#4edea3', strokeWidth: 2 }}
+                      fillOpacity={1}
+                      fill="url(#expertSparklineGrad)"
+                    />
+                  </AreaChart>
+                </ResponsiveContainer>
+              </div>
             </div>
           </div>
 
-          {/* STANDOUT HIGHLIGHT: BẢNG MINH BẠCH XÁC MINH (PRD v4.0 Section 4) */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60 flex flex-col gap-3">
-            <div className="flex items-center justify-between gap-2">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-xl bg-[#eff4ff] flex items-center justify-center text-[#001026]">
-                  <span className="material-symbols-outlined text-[20px]">verified_user</span>
-                </div>
-                <div>
-                  <h3 className="font-headline text-sm font-bold text-[#001026]">Minh bạch xác minh</h3>
-                  <p className="text-[11px] text-[#44474e]">Quy chuẩn kiểm chứng độc lập PRD v4.0</p>
-                </div>
+          {/* Minh bạch kiểm duyệt KYC (Gọn gàng, không nhiều chữ) */}
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60 flex flex-col gap-2.5">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[18px] text-[#006399]">verified_user</span>
+                <h3 className="font-headline text-sm font-bold text-[#001026]">Đã kiểm duyệt độc lập</h3>
               </div>
-              <span className="inline-flex items-center gap-1 bg-[#6ffbbe] text-[#002b1b] text-[10px] px-2.5 py-1 rounded-full uppercase tracking-wider font-bold">
-                <span className="material-symbols-outlined text-[13px]">check_circle</span>
-                Đã kiểm duyệt
+              <span className="text-[10px] text-[#009f6e] font-bold bg-[#6ffbbe]/25 px-2 py-0.5 rounded-full">
+                PRD v4.0
               </span>
             </div>
 
-            {/* Granular Verification Cards */}
-            <div className="space-y-2.5">
+            {/* Dạng thẻ ngắn gọn, không nhồi nhét chữ */}
+            <div className="flex flex-col gap-2 pt-0.5">
               {expert.verifications.map((v) => (
                 <div
                   key={v.id}
-                  className="bg-[#eff4ff] rounded-xl p-3 transition-colors border border-slate-200/50"
+                  className="bg-[#eff4ff] rounded-xl px-3 py-2 border border-slate-200/50 flex items-center justify-between text-xs"
                 >
-                  <div className="flex items-start gap-2.5">
-                    <div className="w-6 h-6 rounded-full bg-[#cde5ff] text-[#001d32] flex items-center justify-center shrink-0 mt-0.5">
-                      <span className="material-symbols-outlined text-[15px]">
-                        {v.type === 'email_phone'
-                          ? 'mark_email_read'
-                          : v.type === 'identity_cccd'
-                          ? 'badge'
-                          : 'workspace_premium'}
-                      </span>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center justify-between gap-1 flex-wrap">
-                        <span className="text-xs font-bold text-[#001026]">{v.title}</span>
-                        <span className="text-[10px] text-[#44474e] bg-white px-2 py-0.5 rounded font-medium border border-slate-200/50">
-                          {v.expiryDate ? `Hạn soát: ${v.expiryDate}` : `Duyệt: ${v.verifiedDate}`}
-                        </span>
-                      </div>
-                      <p className="text-xs text-[#0b1c30] mt-1">
-                        <strong className="font-bold text-[#001026]">Ý nghĩa:</strong> {v.meaning}
-                      </p>
-                      <div className="mt-1.5 flex items-center gap-1.5 text-[#44474e] bg-white/80 px-2 py-1 rounded border border-slate-200/40">
-                        <span className="material-symbols-outlined text-[14px] text-slate-400">info</span>
-                        <span className="text-[11px] italic">Lưu ý: {v.disclaimer}</span>
-                      </div>
-                    </div>
+                  <div className="flex items-center gap-2 min-w-0">
+                    <span className="material-symbols-outlined text-[16px] text-[#009f6e] shrink-0">
+                      check_circle
+                    </span>
+                    <span className="font-bold text-[#001026] truncate">{v.title}</span>
                   </div>
+                  <span className="text-[10px] text-[#44474e] bg-white px-2 py-0.5 rounded-md border border-slate-200 shrink-0 font-medium">
+                    {v.expiryDate ? `Đến ${v.expiryDate}` : 'Đã duyệt'}
+                  </span>
                 </div>
               ))}
             </div>
 
-            {/* Privacy Law Guarantee Box (PRD v4.0 NĐ 356/2025/NĐ-CP) */}
-            <div className="bg-[#e5eeff] rounded-xl p-3 flex items-start gap-2.5 border border-[#006399]/20">
-              <span className="material-symbols-outlined text-[#001026] text-[20px] shrink-0 mt-0.5">shield</span>
-              <div className="flex-1 min-w-0">
-                <p className="text-xs font-bold text-[#001026]">Bảo vệ quyền riêng tư &amp; dữ liệu doanh nghiệp</p>
-                <p className="text-[11px] text-[#0b1c30] mt-0.5 leading-relaxed">
-                  Nền tảng tuân thủ quy chuẩn dữ liệu <strong>NĐ 356/2025/NĐ-CP</strong>: Không bao giờ công khai ảnh chụp CCCD, số giấy tờ hoặc tài liệu KYC gốc lên môi trường công cộng.
-                </p>
-              </div>
-            </div>
+            <p className="text-[11px] text-[#74777f] flex items-center gap-1 pt-1">
+              <span className="material-symbols-outlined text-[14px] text-[#006399]">shield</span>
+              <span>Bảo mật danh tính &amp; tài liệu theo NĐ 356/2025/NĐ-CP.</span>
+            </p>
           </div>
 
-          {/* Dịch vụ & Năng lực công khai */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="w-8 h-8 rounded-xl bg-[#eff4ff] flex items-center justify-center text-[#001026]">
-                <span className="material-symbols-outlined text-[20px]">account_balance</span>
-              </div>
-              <h3 className="font-headline text-sm font-bold text-[#001026]">Dịch vụ &amp; Năng lực công khai</h3>
-            </div>
-            <div className="space-y-2">
+          {/* Dịch vụ & Năng lực tư vấn (Súc tích) */}
+          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60 flex flex-col gap-2.5">
+            <h3 className="font-headline text-sm font-bold text-[#001026] flex items-center gap-1.5">
+              <span className="material-symbols-outlined text-[18px] text-[#006399]">work</span>
+              <span>Dịch vụ &amp; Năng lực chính</span>
+            </h3>
+            <div className="flex flex-col gap-2">
               {expert.services.map((service, idx) => (
-                <div key={idx} className="flex items-start gap-2.5 p-3 bg-[#eff4ff] rounded-xl border border-slate-200/40">
-                  <span className="w-2 h-2 rounded-full bg-[#006399] mt-1.5 shrink-0"></span>
-                  <div className="flex-1">
-                    <h4 className="text-xs font-bold text-[#001026]">{service.title}</h4>
-                    <p className="text-xs text-[#44474e] mt-0.5 leading-relaxed">{service.description}</p>
-                  </div>
+                <div key={idx} className="p-3 bg-[#eff4ff] rounded-xl border border-slate-200/40">
+                  <h4 className="text-xs font-bold text-[#001026]">{service.title}</h4>
+                  <p className="text-[11px] text-[#44474e] mt-0.5 leading-snug">{service.description}</p>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* Hình thức làm việc & Cam kết */}
-          <div className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200/60 flex flex-col gap-3">
-            <h3 className="font-headline text-sm font-bold text-[#001026]">Hình thức làm việc &amp; Phạm vi</h3>
-            <div className="grid grid-cols-2 gap-2.5">
-              <div className="bg-[#eff4ff] p-3 rounded-xl flex flex-col justify-between border border-slate-200/40">
-                <span className="text-[11px] text-[#44474e]">Hình thức</span>
-                <div className="mt-2 flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[18px] text-[#006399]">desktop_windows</span>
-                  <span className="text-xs font-bold text-[#001026]">{expert.workMode}</span>
-                </div>
-              </div>
-              <div className="bg-[#eff4ff] p-3 rounded-xl flex flex-col justify-between border border-slate-200/40">
-                <span className="text-[11px] text-[#44474e]">Địa bàn phục vụ</span>
-                <div className="mt-2 flex items-center gap-1.5">
-                  <span className="material-symbols-outlined text-[18px] text-[#006399]">near_me</span>
-                  <span className="text-xs font-bold text-[#001026]">{expert.location}</span>
-                </div>
+          {/* Hình thức & Cam kết bảo mật (2 ô vuông gọn) */}
+          <div className="grid grid-cols-2 gap-3 text-xs">
+            <div className="bg-white p-3.5 rounded-2xl border border-slate-200/60 flex flex-col justify-between shadow-xs">
+              <span className="text-[11px] text-[#74777f]">Hình thức làm việc</span>
+              <div className="mt-1.5 flex items-center gap-1.5">
+                <span className="material-symbols-outlined text-[18px] text-[#006399]">desktop_windows</span>
+                <span className="font-bold text-[#001026]">{expert.workMode}</span>
               </div>
             </div>
-
-            <div className="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-200/50">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[20px] text-[#009f6e]">history_edu</span>
-                <div>
-                  <p className="text-xs font-bold text-[#001026]">Cam kết bảo mật thông tin (NDA)</p>
-                  <p className="text-[11px] text-[#44474e]">Ký kết thỏa thuận bảo mật trước khi tiếp cận dữ liệu.</p>
-                </div>
+            <div className="bg-white p-3.5 rounded-2xl border border-slate-200/60 flex flex-col justify-between shadow-xs">
+              <span className="text-[11px] text-[#74777f]">Cam kết bảo mật (NDA)</span>
+              <div className="mt-1.5 flex items-center gap-1.5 text-[#009f6e] font-bold">
+                <span className="material-symbols-outlined text-[18px]">verified</span>
+                <span>Ký trước khi trao đổi</span>
               </div>
             </div>
-          </div>
-
-          {/* Chỉ số tin cậy doanh nghiệp */}
-          <div className="bg-[#dce9ff] rounded-2xl p-4 flex items-center justify-between border border-[#006399]/20">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-[#001026] flex items-center justify-center text-white font-bold font-headline text-sm shadow-xs">
-                {expert.trustScore}
-              </div>
-              <div>
-                <p className="text-xs font-bold text-[#001026]">Chỉ số tin cậy doanh nghiệp</p>
-                <p className="text-xs text-[#44474e]">{expert.trustNote}</p>
-              </div>
-            </div>
-            <span className="material-symbols-outlined text-[#006399] text-[24px]">verified</span>
           </div>
         </div>
 
-        {/* FIXED BOTTOM ACTION CTA (Image 5) */}
-        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md px-4 pt-3 pb-6 border-t border-slate-200/60 shadow-[0_-4px_16px_rgba(11,37,69,0.08)]">
-          <div className="max-w-xl mx-auto flex flex-col gap-2">
-            <div className="flex items-center gap-2">
+        {/* Thanh tác vụ cố định dưới cùng: Nút to, khoảng cách thoáng (gap-4) */}
+        <div className="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-md px-5 pt-3.5 pb-6 border-t border-slate-200/70 shadow-[0_-4px_20px_rgba(11,37,69,0.08)]">
+          <div className="max-w-lg mx-auto flex flex-col gap-2">
+            <div className="flex items-center gap-4">
               <button
                 onClick={() => onToggleBookmark(expert.id)}
                 aria-label="Lưu hồ sơ quan tâm"
-                className={`h-12 w-12 rounded-xl flex items-center justify-center transition-all shrink-0 border ${
+                className={`h-13 w-13 min-w-[52px] min-h-[52px] rounded-2xl flex items-center justify-center transition-all shrink-0 border active:scale-95 ${
                   expert.isBookmarked
-                    ? 'bg-[#eff4ff] text-[#006399] border-[#006399]/30'
-                    : 'bg-[#eff4ff] text-[#001026] border-slate-200 hover:bg-[#dce9ff]'
+                    ? 'bg-[#eff4ff] text-[#006399] border-[#006399]/40 shadow-xs'
+                    : 'bg-[#f8f9ff] text-[#001026] border-slate-200 hover:bg-[#eff4ff]'
                 }`}
                 type="button"
               >
@@ -271,15 +277,15 @@ export const ExpertProfileModal: React.FC<ExpertProfileModalProps> = ({
                   onClose();
                   onOpenConnect(expert);
                 }}
-                className="h-12 flex-1 rounded-xl bg-[#001026] text-white font-headline text-xs font-bold hover:bg-[#0b2545] transition-all flex items-center justify-center gap-2 shadow-sm active:scale-[0.99]"
+                className="h-13 min-h-[52px] flex-1 rounded-2xl bg-[#001026] text-white font-headline text-sm font-bold hover:bg-[#0b2545] active:scale-[0.98] transition-all flex items-center justify-center gap-2 shadow-md"
                 type="button"
               >
-                <span className="material-symbols-outlined text-[19px]">send</span>
+                <span className="material-symbols-outlined text-[20px]">send</span>
                 <span>Mời kết nối</span>
               </button>
             </div>
-            <p className="text-[11px] text-[#44474e] text-center">
-              Hai bên tự thỏa thuận phạm vi công việc và thanh toán bên ngoài nền tảng.
+            <p className="text-[10px] text-[#74777f] text-center">
+              Thỏa thuận trực tiếp ngoài nền tảng • 0% hoa hồng
             </p>
           </div>
         </div>

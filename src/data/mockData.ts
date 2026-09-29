@@ -20,6 +20,14 @@ export const INITIAL_EXPERTS: ExpertProfile[] = [
     trustScore: 'A+',
     trustNote: 'Hồ sơ sạch, 0 khiếu nại báo cáo tài chính',
     isBookmarked: false,
+    projectHistory: [
+      { month: 'T4', count: 3 },
+      { month: 'T5', count: 4 },
+      { month: 'T6', count: 6 },
+      { month: 'T7', count: 4 },
+      { month: 'T8', count: 5 },
+      { month: 'T9', count: 6 },
+    ],
     verifications: [
       {
         id: 'v-1',
@@ -86,6 +94,14 @@ export const INITIAL_EXPERTS: ExpertProfile[] = [
     trustScore: 'A',
     trustNote: 'Cựu Senior Tax Consultant tại Big4 (KPMG)',
     isBookmarked: false,
+    projectHistory: [
+      { month: 'T4', count: 2 },
+      { month: 'T5', count: 3 },
+      { month: 'T6', count: 5 },
+      { month: 'T7', count: 4 },
+      { month: 'T8', count: 3 },
+      { month: 'T9', count: 5 },
+    ],
     verifications: [
       {
         id: 'v-21',
@@ -137,6 +153,14 @@ export const INITIAL_EXPERTS: ExpertProfile[] = [
     trustScore: 'A+',
     trustNote: 'Đoàn Luật sư TP. Hà Nội, 0 tranh chấp kỷ luật',
     isBookmarked: false,
+    projectHistory: [
+      { month: 'T4', count: 4 },
+      { month: 'T5', count: 5 },
+      { month: 'T6', count: 4 },
+      { month: 'T7', count: 6 },
+      { month: 'T8', count: 5 },
+      { month: 'T9', count: 7 },
+    ],
     verifications: [
       {
         id: 'v-31',
@@ -188,6 +212,14 @@ export const INITIAL_EXPERTS: ExpertProfile[] = [
     trustScore: 'A',
     trustNote: 'Đã triển khai ERP cho 15 doanh nghiệp sản xuất',
     isBookmarked: false,
+    projectHistory: [
+      { month: 'T4', count: 2 },
+      { month: 'T5', count: 2 },
+      { month: 'T6', count: 3 },
+      { month: 'T7', count: 4 },
+      { month: 'T8', count: 3 },
+      { month: 'T9', count: 4 },
+    ],
     verifications: [
       {
         id: 'v-41',

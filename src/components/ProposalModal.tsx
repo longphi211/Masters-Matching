@@ -120,30 +120,28 @@ export const ProposalModal: React.FC<ProposalModalProps> = ({
           ></textarea>
         </div>
 
-        {/* Legal & Terms Notice */}
-        <div className="p-3 bg-[#e5eeff] rounded-xl flex items-start gap-2 border border-[#006399]/15">
-          <span className="material-symbols-outlined text-[16px] text-[#006399] shrink-0 mt-0.5">verified</span>
-          <p className="text-xs text-[#44474e] leading-snug">
-            Hồ sơ đã xác minh và thông tin liên hệ của bạn sẽ được gửi trực tiếp tới Ban lãnh đạo DN. Hai bên tự chủ động hẹn lịch trao đổi.
-          </p>
+        {/* Legal & Terms Notice - Compact */}
+        <div className="p-3 bg-[#eff4ff] rounded-2xl flex items-center gap-2 border border-slate-200/60 text-xs text-[#44474e]">
+          <span className="material-symbols-outlined text-[18px] text-[#006399] shrink-0">verified</span>
+          <span className="truncate">Hồ sơ gửi trực tiếp tới Ban Giám đốc DN để xem xét.</span>
         </div>
 
-        {/* Submit CTA Buttons */}
-        <div className="flex items-center gap-2 pt-1 pb-4">
+        {/* Submit CTA Buttons - Wide with comfortable gap */}
+        <div className="grid grid-cols-3 gap-3.5 pt-1 pb-3">
           <button
             onClick={onClose}
-            className="w-1/3 py-3 rounded-xl bg-[#eff4ff] text-[#44474e] text-xs font-bold hover:bg-slate-200 transition-colors"
+            className="col-span-1 h-12 rounded-xl bg-[#eff4ff] text-[#44474e] text-xs font-bold hover:bg-slate-200 border border-slate-200/60 active:scale-95 transition-all"
             type="button"
           >
-            Hủy bỏ
+            Hủy
           </button>
           <button
             onClick={handleConfirm}
-            className="w-2/3 py-3 rounded-xl bg-[#001026] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-md hover:bg-[#0b2545] active:scale-98 transition-all"
+            className="col-span-2 h-12 rounded-xl bg-[#001026] text-white text-xs font-bold flex items-center justify-center gap-2 shadow-sm hover:bg-[#0b2545] active:scale-95 transition-all"
             type="button"
           >
             <span className="material-symbols-outlined text-[18px]">send</span>
-            <span>Xác nhận gửi đề xuất</span>
+            <span>Gửi đề xuất</span>
           </button>
         </div>
       </div>
