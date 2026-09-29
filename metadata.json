@@ -1,0 +1,6 @@
+{
+  "name": "Connex B2B - Nền tảng Kết nối Doanh nghiệp & Chuyên gia",
+  "description": "Nền tảng giới thiệu doanh nghiệp và chuyên gia đa lĩnh vực, minh bạch kiểm duyệt hồ sơ KYC theo PRD v4.0.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
